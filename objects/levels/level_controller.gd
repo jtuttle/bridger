@@ -4,21 +4,18 @@ var grid = []
 const width = 20
 const height = 11
 
-const I = [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]
-const O = [[1,1],[1,1]]
-const T = [[0,1,0],[1,1,1],[0,0,0]]
-const S = [[0,1,1],[1,1,0],[0,0,0]]
-const Z = [[1,1,0],[0,1,1],[0,0,0]]
-const J = [[1,0,0],[1,1,1],[0,0,0]]
-const L = [[0,0,1],[1,1,1],[0,0,0]]
-
 #piece stepper
 onready var _timer = $timer
-onready var _tile_map = $tile_map
 var _step_time = 2 #1 second delay
+
+onready var _tile_map = $tile_map
+
+onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	# Prevent randi() from returning same value on every run
+	randomize()
 
 	#set up the grid data structure
 	for x in range(width):
@@ -34,7 +31,9 @@ func _start_level():
 
 	_tile_map.set_cell(2, 2, 0)
 
-	_draw_piece(L, 2, 2)
+	var piece = _shape_factory.next_shape()
+	
+	_draw_piece(piece.get_coords(), 2, 2)
 
 func _move_piece():
 	print("move piece")
@@ -42,9 +41,9 @@ func _move_piece():
 	yield(_timer, "timeout")
 	_move_piece()
 
-func _draw_piece(piece, x, y):
-	for i in range(0, piece.size()):
-		var row = piece[i]
+func _draw_piece(piece_coords, x, y):
+	for i in range(0, piece_coords.size()):
+		var row = piece_coords[i]
 
 		for j in range(0, row.size()):
 			_tile_map.set_cell(x + j, y + i, row[j])
