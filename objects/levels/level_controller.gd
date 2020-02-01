@@ -20,13 +20,16 @@ var _piece_x
 var _piece_y
 
 #has to be higher than this to be considered for passage
-var _minimum_safe_row = 15 #lower than the 15th row before it is passable
-const _tileset_max_cols = 19 #0..19
-const _tileset_max_rows = 10 #0..10
+var _minimum_safe_row = 9 #lower than this row before it is passable
+const _tileset_max_cols = 39 #0..19
+const _tileset_max_rows = 22 #0..10
 
 #tile index information
-const EMPTY_TILE = null
+const EMPTY_TILE = -1
 const WHITE_TILE = 1
+const PATH_TILE = 2
+
+var _path_columns = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -92,7 +95,7 @@ func _drop_piece():
 		_piece_y += 1
 
 	_draw_piece()
-
+	_check_path()
 	_spawn_piece()
 
 func _spawn_piece():
@@ -141,20 +144,49 @@ func _clear_piece():
 
 
 func _check_path():
-	print("check path")
+	var prior_column_top = _tileset_max_rows #make this the maximum, this is a bubble sort
+	_clear_path()
+	
 	for col in range(_tileset_max_cols):
-		 
-		if _column_top(col) <= _minimum_safe_row:
-			print("eligible column")
+		prior_column_top = _column_top(col)
 		
-		for row in range(_tileset_max_rows):
-			print(_tile_map.get_cell(col, row))
+		if col < _tileset_max_cols:
+			var next_column_top = _column_top(col + 1)
+			
+			#TODO this will not record the last, valid step, off by 1 error
+			if prior_column_top < _minimum_safe_row:
+				if prior_column_top - next_column_top == -1 || \
+				prior_column_top - next_column_top == 1 || \
+				prior_column_top - next_column_top == 0 :
+					
+					_path_columns.append(prior_column_top)
+					continue
+				else:
+					_path_columns.append(prior_column_top)
+					_draw_path(_path_columns)
+					return false
 
+	#full width path!
+	_draw_path(_path_columns)
+	return true
+
+func _clear_path():
+	#draw the contiguous path
+	for col in range(_path_columns.size()):
+		_tile_map.set_cell(col, _path_columns[col], WHITE_TILE)
+	_path_columns.clear()
+
+#replace the tiles at the array values in columns for the array indices
+func _draw_path(path : PoolIntArray):
+	print("drawing path")
+	#draw the contiguous path
+	for col in range(path.size()):
+		_tile_map.set_cell(col, path[col], PATH_TILE)
 
 
 func _column_top(col : int = 0):
 	var row = 0
-	while _tile_map.get_cell(col, row) == EMPTY_TILE:
+	while _tile_map.get_cell(col, row) == EMPTY_TILE :
 		row += 1
 		
 	return row
