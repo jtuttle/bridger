@@ -15,6 +15,10 @@ onready var _tile_map = $tile_map
 
 onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
 
+onready var _player = $player
+
+var _victory = false
+
 var _piece
 var _piece_x
 var _piece_y
@@ -43,6 +47,8 @@ func _ready():
 	_start_level()
 
 func _input(event):
+	if _victory: return
+
 	if event.is_action_pressed("speed_up"):
 		_timer.stop()
 		_timer.set_wait_time(_timer_delay / SPEED_UP_FACTOR)
@@ -95,8 +101,25 @@ func _drop_piece():
 		_piece_y += 1
 
 	_draw_piece()
-	_check_path()
-	_spawn_piece()
+
+	_piece = null
+	
+	if _check_path():
+		_win()
+
+	if !_victory:
+		_spawn_piece()
+
+func _win():
+	_timer.stop()
+	_victory = true
+
+	var tops = []
+	
+	for i in range(1, _tileset_max_cols):
+		tops.append(_column_top(i))
+	
+	_player.walk(tops)
 
 func _spawn_piece():
 	_piece = _shape_factory.next_shape()
