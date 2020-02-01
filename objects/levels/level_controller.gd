@@ -55,6 +55,8 @@ func _start_level():
 	
 	_move_piece()
 
+	_column_top()
+
 func _move_piece():
 	print("move piece")
 	
@@ -118,13 +120,13 @@ func _clear_piece():
 			if piece_row[x] == 1:
 				_tile_map.set_cell(_piece_x + x, _piece_y + y, 0)
 
-func column_top(col : int = 0):
-	#set up the grid data structure
-	var lowest_row = tileset_max_rows
-	for row in range(tileset_max_rows):
-		print("row: ", row, " - idx: ", _tile_map.get_cell(row, col))
-	
-	return lowest_row
+func _column_top(col : int = 0):
+	var row = 0
 
+	while _tile_map.get_cell(col, row) == 0:
+		row += 1
+
+	return row
+		
 func _place_minimum_level(minimum_row : int = 15):
 	print("minimum level = ", minimum_row)
