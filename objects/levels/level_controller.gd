@@ -17,10 +17,13 @@ var _piece_x
 var _piece_y
 
 #has to be higher than this to be considered for passage
-var minimum_safe_row = 15 #lower than the 15th row before it is passable
-const tileset_max_cols = 19 #0..19
-const tileset_max_rows = 10 #0..10
+var _minimum_safe_row = 15 #lower than the 15th row before it is passable
+const _tileset_max_cols = 19 #0..19
+const _tileset_max_rows = 10 #0..10
 
+#tile index information
+const BLACK_TILE = 0
+const WHITE_TILE = 1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -29,7 +32,7 @@ func _ready():
 
 	set_process_input(true)
 
-	_place_minimum_level(minimum_safe_row)
+	_place_minimum_level(_minimum_safe_row)
 
 	_start_level()
 
@@ -83,7 +86,8 @@ func _spawn_piece():
 	_piece_x = PIECE_INITIAL_X
 	_piece_y = PIECE_INITIAL_Y
 	_draw_piece()
-	
+
+
 func _is_piece_airborn():
 	var coords = _piece.get_coords()
 	
@@ -95,7 +99,7 @@ func _is_piece_airborn():
 				var tile_x = _piece_x + j
 				var tile_y = _piece_y + i + 1
 
-				if _tile_map.get_cell(tile_x, tile_y) == 1:
+				if _tile_map.get_cell(tile_x, tile_y) == WHITE_TILE:
 					return false
 
 	return true
@@ -108,7 +112,8 @@ func _draw_piece():
 
 		for x in range(0, piece_row.size()):
 			if piece_row[x] == 1:
-				_tile_map.set_cell(_piece_x + x, _piece_y + y, 1)
+				_tile_map.set_cell(_piece_x + x, _piece_y + y, WHITE_TILE)
+
 
 func _clear_piece():
 	var piece_coords = _piece.get_coords()
@@ -118,15 +123,30 @@ func _clear_piece():
 
 		for x in range(0, piece_row.size()):
 			if piece_row[x] == 1:
-				_tile_map.set_cell(_piece_x + x, _piece_y + y, 0)
+				_tile_map.set_cell(_piece_x + x, _piece_y + y, BLACK_TILE)
+
+
+func _check_path():
+	print("check path")
+	for col in range(_tileset_max_cols):
+		 
+		if _column_top(col) <= _minimum_safe_row:
+			print("eligible column")
+		
+		for row in range(_tileset_max_rows):
+			print(_tile_map.get_cell(col, row))
+
+
 
 func _column_top(col : int = 0):
 	var row = 0
-
-	while _tile_map.get_cell(col, row) == 0:
+	while _tile_map.get_cell(col, row) == BLACK_TILE:
 		row += 1
-
-	return row
 		
-func _place_minimum_level(minimum_row : int = 15):
-	print("minimum level = ", minimum_row)
+	return row
+
+
+
+func _place_minimum_level(min_row : int = 15):
+	#draw rectangle at specified row in the grid, over the tilemap
+	print("minimum level = ", min_row)
