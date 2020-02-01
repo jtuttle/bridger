@@ -1,16 +1,22 @@
 extends Node2D
 
-var grid = []
-const width = 20
-const height = 11
+const GRID_WIDTH = 20
+const GRID_HEIGHT = 11
 
-#piece stepper
-onready var _timer = $timer
-var _step_time = 2 #1 second delay
+const PIECE_INITIAL_X = 22
+const PIECE_INITIAL_Y = 2
+
+var grid = []
+
+onready var _timer = $timer # piece stepper 
 
 onready var _tile_map = $tile_map
 
 onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
+
+var _piece
+var _piece_x = PIECE_INITIAL_X
+var _piece_y = PIECE_INITIAL_Y
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,32 +24,44 @@ func _ready():
 	randomize()
 
 	#set up the grid data structure
-	for x in range(width):
+	for x in range(GRID_WIDTH):
 		grid.append([])
-		for y in range(height):
+		for y in range(GRID_HEIGHT):
 			grid[x].append(0)
 			
 	_start_level()
 
 func _start_level():
-	_timer.wait_time = _step_time
-	_move_piece()
+	_piece = _shape_factory.next_shape()
 
-	_tile_map.set_cell(2, 2, 0)
-
-	var piece = _shape_factory.next_shape()
+	_timer.connect("timeout", self, "_move_piece") 
+	_timer.start()
 	
-	_draw_piece(piece.get_coords(), 2, 2)
+	_move_piece()
 
 func _move_piece():
 	print("move piece")
-	_timer.start()
-	yield(_timer, "timeout")
-	_move_piece()
+	
+	_clear_piece()
+	_piece_x -= 1
+	_draw_piece()
 
-func _draw_piece(piece_coords, x, y):
-	for i in range(0, piece_coords.size()):
-		var row = piece_coords[i]
+	_timer.start()
+
+func _draw_piece():
+	var coords = _piece.get_coords()
+	
+	for i in range(0, coords.size()):
+		var row = coords[i]
 
 		for j in range(0, row.size()):
-			_tile_map.set_cell(x + j, y + i, row[j])
+			_tile_map.set_cell(_piece_x + j, _piece_y + i, row[j])
+
+func _clear_piece():
+	var coords = _piece.get_coords()
+
+	for i in range(0, coords.size()):
+		var row = coords[i]
+
+		for j in range(0, row.size()):
+			_tile_map.set_cell(_piece_x + j, _piece_y + i, 0)
