@@ -32,9 +32,16 @@ func _move_piece():
 	_move_piece()
 	
 	
-func _init_level(level):
+func _init_level(level:String):
+	var level_split = level.split()
 	
+	for i in range(level_split.size()):
+		var height = level_split[i]
+		var col = grid[i]
+		
+		for y in range(col.size() - height, col.size()):
+			 
 	
 	for col in grid:
-		for i in range(col.length - )	
+		for i in range(col.length - )
 	
