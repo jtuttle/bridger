@@ -43,6 +43,10 @@ func _input(event):
 		_clear_piece()
 		_piece.rotate_counter_clockwise()
 		_draw_piece()
+	
+	if event.is_action_pressed("drop_piece"):
+		_drop_piece()
+
 
 func _start_level():
 	_piece = _shape_factory.next_shape()
@@ -60,6 +64,12 @@ func _move_piece():
 	_draw_piece()
 
 	_timer.start()
+
+func _drop_piece():
+	print("drop piece!")
+	var coords = _piece.get_coords()
+
+
 
 func _draw_piece():
 	var coords = _piece.get_coords()
