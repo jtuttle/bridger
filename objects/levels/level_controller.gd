@@ -23,6 +23,8 @@ func _ready():
 	# Prevent randi() from returning same value on every run
 	randomize()
 
+	set_process_input(true)
+
 	#set up the grid data structure
 	for x in range(GRID_WIDTH):
 		grid.append([])
@@ -30,6 +32,17 @@ func _ready():
 			grid[x].append(0)
 			
 	_start_level()
+
+func _input(event):
+	if event.is_action_pressed("rotate_clockwise"):
+		_clear_piece()
+		_piece.rotate_clockwise()
+		_draw_piece()
+		
+	if event.is_action_pressed("rotate_counter_clockwise"):
+		_clear_piece()
+		_piece.rotate_counter_clockwise()
+		_draw_piece()
 
 func _start_level():
 	_piece = _shape_factory.next_shape()
