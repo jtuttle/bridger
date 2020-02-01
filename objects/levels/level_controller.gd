@@ -3,10 +3,13 @@ extends Node2D
 const GRID_WIDTH = 20
 const GRID_HEIGHT = 11
 
-const PIECE_INITIAL_X = 10 # 22
+const PIECE_INITIAL_X = 14 # 22
 const PIECE_INITIAL_Y = 2
 
-onready var _timer = $timer # piece stepper 
+const SPEED_UP_FACTOR = 5.0
+
+onready var _timer = $timer # piece stepper
+var _timer_delay = 1
 
 onready var _tile_map = $tile_map
 
@@ -22,7 +25,7 @@ const _tileset_max_cols = 19 #0..19
 const _tileset_max_rows = 10 #0..10
 
 #tile index information
-const BLACK_TILE = 0
+const EMPTY_TILE = null
 const WHITE_TILE = 1
 
 # Called when the node enters the scene tree for the first time.
@@ -37,6 +40,16 @@ func _ready():
 	_start_level()
 
 func _input(event):
+	if event.is_action_pressed("speed_up"):
+		_timer.stop()
+		_timer.set_wait_time(_timer_delay / SPEED_UP_FACTOR)
+		_move_piece()
+	
+	if event.is_action_released("speed_up"):
+		_timer.stop()
+		_timer.set_wait_time(_timer_delay)
+		_timer.start()
+
 	if event.is_action_pressed("rotate_clockwise"):
 		_clear_piece()
 		_piece.rotate_clockwise()
@@ -53,7 +66,8 @@ func _input(event):
 func _start_level():
 	_spawn_piece()
 
-	_timer.connect("timeout", self, "_move_piece") 
+	_timer.connect("timeout", self, "_move_piece")
+	_timer.set_wait_time(_timer_delay)
 	_timer.start()
 	
 	_move_piece()
@@ -123,7 +137,7 @@ func _clear_piece():
 
 		for x in range(0, piece_row.size()):
 			if piece_row[x] == 1:
-				_tile_map.set_cell(_piece_x + x, _piece_y + y, BLACK_TILE)
+				_tile_map.set_cell(_piece_x + x, _piece_y + y, EMPTY_TILE)
 
 
 func _check_path():
@@ -140,7 +154,7 @@ func _check_path():
 
 func _column_top(col : int = 0):
 	var row = 0
-	while _tile_map.get_cell(col, row) == BLACK_TILE:
+	while _tile_map.get_cell(col, row) == EMPTY_TILE:
 		row += 1
 		
 	return row
