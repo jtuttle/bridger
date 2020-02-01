@@ -18,6 +18,12 @@ var _piece
 var _piece_x = PIECE_INITIAL_X
 var _piece_y = PIECE_INITIAL_Y
 
+#has to be higher than this to be considered for passage
+var minimum_safe_row = 15 #lower than the 15th row before it is passable
+const tileset_max_cols = 19 #0..19
+const tileset_max_rows = 10 #0..10
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Prevent randi() from returning same value on every run
@@ -30,7 +36,9 @@ func _ready():
 		grid.append([])
 		for y in range(GRID_HEIGHT):
 			grid[x].append(0)
-			
+	
+	_place_minimum_level(minimum_safe_row)
+
 	_start_level()
 
 func _input(event):
@@ -67,8 +75,6 @@ func _move_piece():
 
 func _drop_piece():
 	print("drop piece!")
-	var coords = _piece.get_coords()
-
 
 
 func _draw_piece():
@@ -88,3 +94,16 @@ func _clear_piece():
 
 		for j in range(0, row.size()):
 			_tile_map.set_cell(_piece_x + j, _piece_y + i, 0)
+
+
+func column_top(col : int = 0):
+	#set up the grid data structure
+	var lowest_row = tileset_max_rows
+	for row in range(tileset_max_rows):
+		print("row: ", row, " - idx: ", _tile_map.get_cell(row, col))
+	
+	return lowest_row
+
+
+func _place_minimum_level(minimum_row : int = 15):
+	print("minimum level = ", minimum_row)
