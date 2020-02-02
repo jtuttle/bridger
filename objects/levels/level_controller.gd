@@ -6,7 +6,7 @@ const GRID_HEIGHT = 11
 const PIECE_INITIAL_X = 42 # 22
 const PIECE_INITIAL_Y = 2
 
-const SPEED_UP_FACTOR = 8.0
+const SPEED_UP_FACTOR = 16.0
 
 onready var _timer = $timer # piece stepper
 var _timer_delay = 1
@@ -25,20 +25,23 @@ var _piece_y
 
 #has to be higher than this to be considered for passage
 var _minimum_safe_row = 9 #lower than this row before it is passable
-const _tileset_max_cols = 39 #0..19
-const _tileset_max_rows = 22 #0..10
+
+const _level_cols = 40
+
+#const _tileset_max_cols = 39 #0..19
+#const _tileset_max_rows = 22 #0..10
 
 #tile index information
 const EMPTY_TILE = -1
 const WHITE_TILE = 1
 const PATH_TILE = 2
 
-var _path_columns = []
-
 onready var _win_screen = $ui/win_screen
 onready var _lose_screen = $ui/lose_screen
 
-# Called when the node enters the scene tree for the first time.
+# The last recorded path
+var _prev_path = []
+
 func _ready():
 	# Prevent randi() from returning same value on every run
 	randomize()
@@ -91,8 +94,6 @@ func _start_level():
 	_column_top()
 
 func _move_piece():
-#	print("move piece")
-	
 	_clear_piece()
 	_piece_x -= 1
 	_draw_piece()
@@ -100,8 +101,6 @@ func _move_piece():
 	_timer.start()
 
 func _drop_piece():
-#	print("drop piece!")
-
 	_clear_piece()
 
 	while _is_piece_airborn():
@@ -110,8 +109,12 @@ func _drop_piece():
 	_draw_piece()
 
 	_piece = null
-	
-	if _check_path():
+
+	_clear_prev_path()
+	_prev_path = _get_path()
+	_draw_path(_prev_path)
+
+	if _prev_path.size() == _level_cols:
 		_win()
 
 	if !_victory:
@@ -122,10 +125,10 @@ func _win():
 	_timer.stop()
 	_victory = true
 
-	var tops = []
+#	var tops = []
 	
-	for i in range(1, _tileset_max_cols):
-		tops.append(_column_top(i))
+#	for i in range(1, _level_cols):
+#		tops.append(_column_top(i))
 	
 #	_player.walk(tops)
 	_win_screen.visible = true
@@ -149,7 +152,7 @@ func _is_piece_airborn():
 				var tile_x = _piece_x + j
 				var tile_y = _piece_y + i + 1
 
-				if _tile_map.get_cell(tile_x, tile_y) == WHITE_TILE:
+				if _tile_map.get_cell(tile_x, tile_y) != EMPTY_TILE:
 					return false
 
 	return true
@@ -175,41 +178,24 @@ func _clear_piece():
 			if piece_row[x] == 1:
 				_tile_map.set_cell(_piece_x + x, _piece_y + y, EMPTY_TILE)
 
+func _get_path():
+	var path = [ _column_top(0) ]
 
-func _check_path():
-	var prior_column_top = _tileset_max_rows #make this the maximum, this is a bubble sort
-	_clear_path()
-	
-	for col in range(_tileset_max_cols):
-		prior_column_top = _column_top(col)
+	while path.size() < _level_cols + 1:
+		var next_top = _column_top(path.size())
+
+		if abs(path.back() - next_top) > 1:
+			break
 		
-		if col < _tileset_max_cols:
-			var next_column_top = _column_top(col + 1)
-			
-			#TODO this will not record the last, valid step, off by 1 error
-			if prior_column_top < _minimum_safe_row:
-				if prior_column_top - next_column_top == -1 || \
-				prior_column_top - next_column_top == 1 || \
-				prior_column_top - next_column_top == 0 :
-					
-					_path_columns.append(prior_column_top)
-					continue
-				else:
-					_path_columns.append(prior_column_top)
-					_draw_path(_path_columns)
-					return false
+		path.append(next_top)
 
-	#full width path!
-	_draw_path(_path_columns)
-	return true
+	return path
 
+func _clear_prev_path():
+	for col in range(_prev_path.size()):
+		_tile_map.set_cell(col, _prev_path[col], WHITE_TILE)
 
-func _clear_path():
-	#draw the contiguous path
-	for col in range(_path_columns.size()):
-		_tile_map.set_cell(col, _path_columns[col], WHITE_TILE)
-	_path_columns.clear()
-
+	_prev_path.clear()
 
 #replace the tiles at the array values in columns for the array indices
 func _draw_path(path : PoolIntArray):
