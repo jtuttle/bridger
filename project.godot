@@ -18,7 +18,6 @@ _global_script_class_icons={
 config/name="bridger"
 config/description="Global Game Jam 2020 entry. \"Repair\" is the theme,"
 run/main_scene="res://objects/levels/game/game.tscn"
-boot_splash/image="res://images/splash.png"
 boot_splash/bg_color=Color( 0, 0, 0, 1 )
 config/icon="res://images/player.png"
 

@@ -188,7 +188,7 @@ func _drop_piece():
 	var puff_loc = _tile_map.map_to_world(Vector2(_piece_x, _piece_y))
 	_level.puff(puff_loc)
 	
-	if _prev_path.size() == _level_cols:
+	if _prev_path.size() == _level_cols - PATH_OFFSET:
 		_win()
 
 	if !_victory:
@@ -196,6 +196,8 @@ func _drop_piece():
 
 
 func _win():
+	print("win!")
+
 	_timer.stop()
 	_victory = true
 	
@@ -265,7 +267,7 @@ func _clear_piece():
 func _get_path():
 	var path = [ _column_top(PATH_OFFSET) ]
 
-	while path.size() < _level_cols:
+	while PATH_OFFSET + path.size() < _level_cols:
 		var next_top = _column_top(PATH_OFFSET + path.size())
 
 		if abs(path.back() - next_top) > 1:
