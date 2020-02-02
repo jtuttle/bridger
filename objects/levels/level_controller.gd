@@ -305,6 +305,7 @@ func _reset():
 	# Manually resetting controller state (barf)
 	_tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
 	_level = $level_holder/level_1
+	_player = $level_holder/level_1/player
 	_timer.set_wait_time(_timer_delay)
 	_piece = null
 	_spawn_piece()
