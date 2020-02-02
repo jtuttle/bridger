@@ -1,4 +1,4 @@
-extends Sprite
+extends Node2D
 
 onready var _move_tween = $move
 
@@ -12,9 +12,10 @@ func _on_move_complete(object, key):
 	_next_step()
 	
 func walk(column_tops):
-	print(column_tops)
-	_walk_path = column_tops
-	_next_step()
+	print("WALKIES")
+#	print(column_tops)
+#	_walk_path = column_tops
+#	_next_step()
 
 func _next_step():
 	var next_step = _walk_path.front()

@@ -16,7 +16,7 @@ onready var _level = $level_holder/level_1
 
 onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
 
-onready var _player = null #$player
+onready var _player = $level_holder/level_1/player
 
 var _victory = false
 
@@ -205,13 +205,13 @@ func _win():
 	
 	_win_sound.play()
 
-	_level.move_player_on_path(_tile_map, _prev_path, PATH_OFFSET)
-#	var tops = []
+	#_level.move_player_on_path(_tile_map, _prev_path, PATH_OFFSET)
+	var tops = []
 	
-#	for i in range(1, _level_cols):
-#		tops.append(_column_top(i))
+	for i in range(1, _level_cols):
+		tops.append(_column_top(i))
 	
-#	_player.walk(tops)
+	_player.walk(tops)
 	_show_win_screen()
 
 
