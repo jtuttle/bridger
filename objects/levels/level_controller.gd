@@ -1,7 +1,7 @@
 extends Node2D
 
 const PIECE_INITIAL_X = 42 # 22
-const PIECE_INITIAL_Y = 2
+const PIECE_INITIAL_Y = 1
 
 const SPEED_UP_FACTOR = 16.0
 
@@ -28,7 +28,7 @@ const _level_cols = 40
 
 #tile index information
 const EMPTY_TILE = -1
-const PATH_TILE = 3
+const PATH_TILE = 5
 const PIECE_TILE = 4
 
 onready var _win_screen = $ui/win_screen
