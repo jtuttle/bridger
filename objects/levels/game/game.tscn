@@ -17,6 +17,16 @@ one_shot = true
 
 [node name="ui" type="CanvasLayer" parent="."]
 
+[node name="color_rect" type="ColorRect" parent="ui"]
+visible = false
+self_modulate = Color( 1, 1, 1, 0.705882 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="win_screen" parent="ui" instance=ExtResource( 2 )]
 visible = false
 

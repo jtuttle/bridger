@@ -8,7 +8,7 @@ func _ready():
 
 
 func _repeat_pressed():
-	print("repeat button pressed")
+	global.load_level()
 
 
 func _quit_pressed():
