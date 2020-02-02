@@ -66,6 +66,8 @@ func _ready():
 	$background_sound.play()
 	$ambient_sound.play()
 	
+	global.initialize_level(get_child(0))
+	
 	_start_level()
 
 func get_hazard_level():
