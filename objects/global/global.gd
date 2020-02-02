@@ -24,3 +24,7 @@ func get_level_name():
 
 func get_level_path():
 	return str(_level_path, _level_prefix, str(_level_num))
+
+
+func get_game():
+	return get_node("/root/game")
