@@ -53,7 +53,7 @@ margin_top = 197.0
 margin_right = 317.0
 margin_bottom = 251.0
 custom_fonts/font = SubResource( 2 )
-text = "Repeat Level"
+text = "Play Again"
 
 [node name="quit_button" type="Button" parent="v_box_container"]
 margin_top = 281.0
