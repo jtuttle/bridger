@@ -62,6 +62,9 @@ func _ready():
 	_win_screen.connect("NEXT_LEVEL", self, "_reset")
 	_win_screen.connect("REPEAT_LEVEL", self, "_reset")
 	_lose_screen.connect("REPEAT_LEVEL", self, "_reset")
+
+	$background_sound.play()
+	$ambient_sound.play()
 	
 	_start_level()
 
@@ -250,13 +253,11 @@ func _lose():
 	_lose_sound.play()
 	_show_lose_screen()
 
-
 func _spawn_piece():
 	_piece = _shape_factory.next_shape()
 	_piece_x = PIECE_INITIAL_X
 	_piece_y = PIECE_INITIAL_Y
 	_draw_piece()
-
 
 func _is_piece_airborn():
 	var coords = _piece.get_coords()
