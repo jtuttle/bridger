@@ -35,3 +35,5 @@ animations = [ {
 [node name="animated_sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 5 )
 animation = "idle"
+centered = false
+offset = Vector2( 0, -48 )

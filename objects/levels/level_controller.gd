@@ -37,6 +37,13 @@ const PIECE_TILE = 4
 onready var _win_screen = $ui/win_screen
 onready var _lose_screen = $ui/lose_screen
 
+#sounds
+onready var _drop_sound = $drop_sound
+onready var _background_sound = $background_sound
+onready var _ambient_sound = $ambient_sound
+onready var _win_sound = $win_sound
+onready var _lose_sound = $lose_sound
+
 # The last recorded path
 var _prev_path = []
 
@@ -89,7 +96,8 @@ func _input(event):
 	
 	if event.is_action_pressed("drop_piece"):
 		_drop_piece()
-		
+	
+	#replace this with a non-win version of the UI
 	if event.is_action_pressed("bring_up_ui"):
 		_win()
 
@@ -169,15 +177,16 @@ func _drop_piece():
 		_piece_y += 1
 
 	_draw_piece()
-
+	_drop_sound.play()
+	
 	_piece = null
 
 	_clear_prev_path()
 	_prev_path = _get_path()
 	_draw_path(_prev_path)
 #
-#	var puff_loc = _tile_map.map_to_world(Vector2(_piece_x, _piece_y))
-#	_level.puff(puff_loc)
+	var puff_loc = _tile_map.map_to_world(Vector2(_piece_x, _piece_y))
+	_level.puff(puff_loc)
 	
 	if _prev_path.size() == _level_cols:
 		_win()
@@ -189,7 +198,10 @@ func _drop_piece():
 func _win():
 	_timer.stop()
 	_victory = true
+	
+	_win_sound.play()
 
+	_level.move_player_on_path(_tile_map, _prev_path, PATH_OFFSET)
 #	var tops = []
 	
 #	for i in range(1, _level_cols):
@@ -202,6 +214,7 @@ func _win():
 func _lose():
 	_timer.stop()
 	_victory = true
+	_lose_sound.play()
 	_show_lose_screen()
 
 

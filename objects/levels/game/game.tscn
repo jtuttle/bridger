@@ -32,3 +32,13 @@ visible = false
 
 [node name="lose_screen" parent="ui" instance=ExtResource( 3 )]
 visible = false
+
+[node name="drop_sound" type="AudioStreamPlayer" parent="."]
+
+[node name="background_sound" type="AudioStreamPlayer" parent="."]
+
+[node name="ambient_sound" type="AudioStreamPlayer" parent="."]
+
+[node name="win_sound" type="AudioStreamPlayer" parent="."]
+
+[node name="lose_sound" type="AudioStreamPlayer" parent="."]
