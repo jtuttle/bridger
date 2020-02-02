@@ -33,8 +33,8 @@ const _level_cols = 40
 
 #tile index information
 const EMPTY_TILE = -1
-const WHITE_TILE = 1
-const PATH_TILE = 2
+const PATH_TILE = 3
+const PIECE_TILE = 4
 
 onready var _win_screen = $ui/win_screen
 onready var _lose_screen = $ui/lose_screen
@@ -165,7 +165,7 @@ func _draw_piece():
 
 		for x in range(0, piece_row.size()):
 			if piece_row[x] == 1:
-				_tile_map.set_cell(_piece_x + x, _piece_y + y, WHITE_TILE)
+				_tile_map.set_cell(_piece_x + x, _piece_y + y, PIECE_TILE)
 
 
 func _clear_piece():
@@ -181,7 +181,7 @@ func _clear_piece():
 func _get_path():
 	var path = [ _column_top(0) ]
 
-	while path.size() < _level_cols + 1:
+	while path.size() < _level_cols:
 		var next_top = _column_top(path.size())
 
 		if abs(path.back() - next_top) > 1:
@@ -193,17 +193,14 @@ func _get_path():
 
 func _clear_prev_path():
 	for col in range(_prev_path.size()):
-		_tile_map.set_cell(col, _prev_path[col], WHITE_TILE)
+		_tile_map.set_cell(col, _prev_path[col], PIECE_TILE)
 
 	_prev_path.clear()
 
 #replace the tiles at the array values in columns for the array indices
 func _draw_path(path : PoolIntArray):
-	print("drawing path")
-	#draw the contiguous path
 	for col in range(path.size()):
 		_tile_map.set_cell(col, path[col], PATH_TILE)
-
 
 func _column_top(col : int = 0):
 	var row = 0
@@ -211,8 +208,6 @@ func _column_top(col : int = 0):
 		row += 1
 		
 	return row
-
-
 
 func _place_minimum_level(min_row : int = 15):
 	#draw rectangle at specified row in the grid, over the tilemap
