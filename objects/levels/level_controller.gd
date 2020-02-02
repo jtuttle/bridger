@@ -5,6 +5,8 @@ const PIECE_INITIAL_Y = 1
 
 const SPEED_UP_FACTOR = 50.0
 
+const PATH_OFFSET = 2
+
 onready var _timer = $timer # piece stepper
 var _timer_delay = 1
 
@@ -23,7 +25,7 @@ var _piece_x
 var _piece_y
 
 #has to be higher than this to be considered for passage
-var _minimum_safe_row = 5 #lower than this row before it is passable
+var _minimum_safe_row = 8 #lower than this row before it is passable
 
 const _level_cols = 40
 
@@ -248,10 +250,10 @@ func _clear_piece():
 				_tile_map.set_cell(_piece_x + x, _piece_y + y, EMPTY_TILE)
 
 func _get_path():
-	var path = [ _column_top(2) ]
+	var path = [ _column_top(PATH_OFFSET) ]
 
 	while path.size() < _level_cols:
-		var next_top = _column_top(path.size())
+		var next_top = _column_top(PATH_OFFSET + path.size())
 
 		if abs(path.back() - next_top) > 1:
 			break
@@ -260,19 +262,16 @@ func _get_path():
 
 	return path
 
+func _draw_path(path : PoolIntArray):
+	for col in range(path.size()):
+		_tile_map.set_cell(PATH_OFFSET + col, path[col], PATH_TILE)
 
 func _clear_prev_path():
 	for col in range(_prev_path.size()):
-		_tile_map.set_cell(col, _prev_path[col], PIECE_TILE)
+		_tile_map.set_cell(PATH_OFFSET + col, _prev_path[col], PIECE_TILE)
 
 	_prev_path.clear()
-
-
-#replace the tiles at the array values in columns for the array indices
-func _draw_path(path : PoolIntArray):
-	for col in range(path.size()):
-		_tile_map.set_cell(col, path[col], PATH_TILE)
-
+		
 func _column_top(col : int = 0):
 	var row = 0
 	while _tile_map.get_cell(col, row) == EMPTY_TILE :
