@@ -6,7 +6,7 @@ const GRID_HEIGHT = 11
 const PIECE_INITIAL_X = 42 # 22
 const PIECE_INITIAL_Y = 2
 
-const SPEED_UP_FACTOR = 5.0
+const SPEED_UP_FACTOR = 8.0
 
 onready var _timer = $timer # piece stepper
 var _timer_delay = 1
