@@ -142,8 +142,25 @@ func _get_leftmost_col(piece):
 				leftmost = i
 
 	return leftmost
-		
+
+func _piece_is_far_enough():
+	var rightmost = _get_rightmost_col(_piece)
+	return _piece_x + rightmost < _level_cols - 3
+
+func _get_rightmost_col(piece):
+	var rightmost = 0
+
+	for row in piece.get_coords():
+		for i in range(row.size()):
+			if row[i] == 1 && i > rightmost:
+				rightmost = i
+
+	return rightmost
+
 func _drop_piece():
+	if !_piece_is_far_enough():
+		return
+
 	_clear_piece()
 
 	while _is_piece_airborn():
@@ -268,6 +285,16 @@ func _reset():
 	_hide_win_screen()
 	_hide_lose_screen()
 
+	# TODO: REFACTOR ME PLZ
+	# Manually resetting controller state (barf)
+	_piece = null
+	_spawn_piece()
+	_timer.start()
+
+	_tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
+	_level = $level_holder/level_1
+
+	_victory = false
 
 func _show_win_screen():
 	$ui/color_rect.visible = true
@@ -284,5 +311,3 @@ func _show_lose_screen():
 func _hide_lose_screen():
 	$ui/color_rect.visible = false
 	_lose_screen.visible = false
-
-
