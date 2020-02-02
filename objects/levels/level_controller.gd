@@ -108,6 +108,7 @@ func _trash_piece():
 	# something bad
 	_piece = null
 	_spawn_piece()
+	_timer.start()
 		
 func _piece_is_too_far():
 	var leftmost = _get_leftmost_col(_piece)
@@ -117,7 +118,6 @@ func _get_leftmost_col(piece):
 	var leftmost = 100
 
 	for row in piece.get_coords():
-		print(row)
 		for i in range(row.size()):
 			if row[i] == 1 && i < leftmost:
 				leftmost = i
