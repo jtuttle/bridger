@@ -272,7 +272,7 @@ func _get_path():
 	while PATH_OFFSET + path.size() < _level_cols:
 		var next_top = _column_top(PATH_OFFSET + path.size())
 
-		if abs(path.back() - next_top) > 1:
+		if next_top > _minimum_safe_row || abs(path.back() - next_top) > 1:
 			break
 		
 		path.append(next_top)
