@@ -287,12 +287,13 @@ func _reset():
 
 	# TODO: REFACTOR ME PLZ
 	# Manually resetting controller state (barf)
+	_tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
+	_level = $level_holder/level_1
+	_timer.set_wait_time(_timer_delay)
 	_piece = null
 	_spawn_piece()
 	_timer.start()
 
-	_tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
-	_level = $level_holder/level_1
 
 	_victory = false
 
