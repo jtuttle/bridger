@@ -1,7 +1,7 @@
 extends Node2D
 
 const PIECE_INITIAL_X = 42 # 22
-const PIECE_INITIAL_Y = 2
+const PIECE_INITIAL_Y = 1
 
 const SPEED_UP_FACTOR = 16.0
 
@@ -29,7 +29,7 @@ const _level_cols = 40
 
 #tile index information
 const EMPTY_TILE = -1
-const PATH_TILE = 3
+const PATH_TILE = 5
 const PIECE_TILE = 4
 
 onready var _win_screen = $ui/win_screen
@@ -69,12 +69,20 @@ func _input(event):
 	if event.is_action_pressed("rotate_clockwise"):
 		_clear_piece()
 		_piece.rotate_clockwise()
-		_draw_piece()
+
+		if _piece_is_too_far():
+			_trash_piece()
+		else:
+			_draw_piece()
 		
 	if event.is_action_pressed("rotate_counter_clockwise"):
 		_clear_piece()
 		_piece.rotate_counter_clockwise()
-		_draw_piece()
+
+		if _piece_is_too_far():
+			_trash_piece()
+		else:
+			_draw_piece()
 	
 	if event.is_action_pressed("drop_piece"):
 		_drop_piece()
@@ -91,15 +99,36 @@ func _start_level():
 	
 	_move_piece()
 
-	_column_top()
-
 func _move_piece():
 	_clear_piece()
 	_piece_x -= 1
-	_draw_piece()
 
+	if _piece_is_too_far():
+		_trash_piece()
+	else:
+		_draw_piece()
+		_timer.start()
+
+func _trash_piece():
+	# something bad
+	_piece = null
+	_spawn_piece()
 	_timer.start()
+		
+func _piece_is_too_far():
+	var leftmost = _get_leftmost_col(_piece)
+	return _piece_x + leftmost < 3
 
+func _get_leftmost_col(piece):
+	var leftmost = 100
+
+	for row in piece.get_coords():
+		for i in range(row.size()):
+			if row[i] == 1 && i < leftmost:
+				leftmost = i
+
+	return leftmost
+		
 func _drop_piece():
 	_clear_piece()
 
