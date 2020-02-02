@@ -8,6 +8,7 @@ const SPEED_UP_FACTOR = 16.0
 onready var _timer = $timer # piece stepper
 var _timer_delay = 1
 
+#TODO FIX THIS IF WE DO DYNAMIC LEVELS
 onready var _tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
 onready var _level = $level_holder/level_1
 
@@ -43,7 +44,11 @@ func _ready():
 	
 	set_process_input(true)
 
+	_win_screen.connect("NEXT_LEVEL", self, "_reset")
+	_win_screen.connect("REPEAT_LEVEL", self, "_reset")
+	
 	_start_level()
+
 
 func get_hazard_level():
 	return _minimum_safe_row
@@ -155,7 +160,7 @@ func _win():
 #		tops.append(_column_top(i))
 	
 #	_player.walk(tops)
-	_win_screen.visible = true
+	_show_win_screen()
 
 
 func _spawn_piece():
@@ -233,7 +238,27 @@ func _column_top(col : int = 0):
 		
 	return row
 
-func _place_minimum_level(min_row : int = 15):
-	#draw rectangle at specified row in the grid, over the tilemap
-	
-	print("minimum level = ", min_row)
+
+#manipulate the UI
+func _reset():
+	_hide_win_screen()
+	_hide_lose_screen()
+
+
+func _show_win_screen():
+	$ui/color_rect.visible = true
+	_win_screen.visible = true
+
+func _hide_win_screen():
+	$ui/color_rect.visible = false
+	_win_screen.visible = false
+
+func _show_lose_screen():
+	$ui/color_rect.visible = true
+	_lose_screen.visible = true
+
+func _hide_lose_screen():
+	$ui/color_rect.visible = false
+	_lose_screen.visible = false
+
+

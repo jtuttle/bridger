@@ -23,9 +23,9 @@ __meta__ = {
 
 [node name="v_box_container" type="VBoxContainer" parent="."]
 margin_left = 321.0
-margin_top = 60.0
+margin_top = 102.0
 margin_right = 638.0
-margin_bottom = 479.0
+margin_bottom = 437.0
 custom_constants/separation = 30
 alignment = 2
 __meta__ = {
@@ -41,6 +41,7 @@ text = "You Won!
 "
 
 [node name="next_level_button" type="Button" parent="v_box_container"]
+visible = false
 margin_top = 197.0
 margin_right = 317.0
 margin_bottom = 251.0
@@ -48,15 +49,15 @@ custom_fonts/font = SubResource( 2 )
 text = "Next Level"
 
 [node name="repeat_level_button" type="Button" parent="v_box_container"]
-margin_top = 281.0
+margin_top = 197.0
 margin_right = 317.0
-margin_bottom = 335.0
+margin_bottom = 251.0
 custom_fonts/font = SubResource( 2 )
 text = "Repeat Level"
 
 [node name="quit_button" type="Button" parent="v_box_container"]
-margin_top = 365.0
+margin_top = 281.0
 margin_right = 317.0
-margin_bottom = 419.0
+margin_bottom = 335.0
 custom_fonts/font = SubResource( 2 )
 text = "Quit"
