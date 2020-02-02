@@ -223,7 +223,6 @@ func _is_piece_airborn():
 
 	return true
 
-
 func _draw_piece():
 	var piece_coords = _piece.get_coords()
 	
@@ -245,9 +244,8 @@ func _clear_piece():
 			if piece_row[x] == 1:
 				_tile_map.set_cell(_piece_x + x, _piece_y + y, EMPTY_TILE)
 
-
 func _get_path():
-	var path = [ _column_top(0) ]
+	var path = [ _column_top(2) ]
 
 	while path.size() < _level_cols:
 		var next_top = _column_top(path.size())
@@ -279,7 +277,6 @@ func _column_top(col : int = 0):
 		
 	return row
 
-
 #manipulate the UI
 func _reset():
 	_hide_win_screen()
@@ -293,7 +290,6 @@ func _reset():
 	_piece = null
 	_spawn_piece()
 	_timer.start()
-
 
 	_victory = false
 
