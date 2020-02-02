@@ -23,7 +23,7 @@ var _piece_x
 var _piece_y
 
 #has to be higher than this to be considered for passage
-var _minimum_safe_row = 9 #lower than this row before it is passable
+var _minimum_safe_row = 5 #lower than this row before it is passable
 
 const _level_cols = 40
 
