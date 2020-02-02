@@ -2,6 +2,7 @@ extends Node2D
 
 
 onready var _hazard = $hazard
+onready var _puff = $cpu_particles_2d
 
 var _hazard_top
 var _hazard_bottom
@@ -56,3 +57,9 @@ func _float_around():  #oscillate like you are floating in space
 		
 		yield(_tween, "tween_completed")
 		_float_running = false
+
+
+func puff(location : Vector2):
+	_puff.global_position = location
+	_puff.emitting = true
+

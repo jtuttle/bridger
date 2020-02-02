@@ -9,7 +9,7 @@ onready var _timer = $timer # piece stepper
 var _timer_delay = 1
 
 #TODO FIX THIS IF WE DO DYNAMIC LEVELS
-onready var _tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
+onready var _tile_map : TileMap = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
 onready var _level = $level_holder/level_1
 
 onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
@@ -173,7 +173,10 @@ func _drop_piece():
 	_clear_prev_path()
 	_prev_path = _get_path()
 	_draw_path(_prev_path)
-
+#
+#	var puff_loc = _tile_map.map_to_world(Vector2(_piece_x, _piece_y))
+#	_level.puff(puff_loc)
+	
 	if _prev_path.size() == _level_cols:
 		_win()
 
