@@ -1,10 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://objects/levels/level_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://images/lava_01.png" type="Texture" id=2]
 [ext_resource path="res://objects/levels/level_1/level_1.gd" type="Script" id=3]
 [ext_resource path="res://images/background.png" type="Texture" id=4]
 [ext_resource path="res://objects/player.tscn" type="PackedScene" id=5]
+
+[sub_resource type="Gradient" id=1]
+offsets = PoolRealArray( 0, 0.37561, 0.863415 )
+colors = PoolColorArray( 0.178711, 0.158466, 0.158466, 1, 0.537255, 0.52549, 0.52549, 0.941176, 1, 1, 1, 0 )
 
 [node name="level_1" type="Node2D"]
 script = ExtResource( 3 )
@@ -31,3 +35,25 @@ tile_data = PoolIntArray( 524288, 5, 0, 524289, 5, 0, 524290, 5, 0, 524325, 3, 0
 
 [node name="player" parent="." instance=ExtResource( 5 )]
 position = Vector2( 60, 168 )
+
+[node name="cpu_particles_2d" type="CPUParticles2D" parent="."]
+position = Vector2( 36, 192 )
+emitting = false
+amount = 60
+lifetime = 0.25
+one_shot = true
+explosiveness = 1.0
+randomness = 0.75
+fract_delta = false
+emission_shape = 2
+emission_rect_extents = Vector2( 12, 0 )
+direction = Vector2( 0, -1 )
+gravity = Vector2( 0, 100 )
+initial_velocity = 100.0
+initial_velocity_random = 0.75
+linear_accel = 5.0
+linear_accel_random = 0.5
+scale_amount = 2.0
+color_ramp = SubResource( 1 )
+hue_variation = 0.1
+hue_variation_random = 0.46
