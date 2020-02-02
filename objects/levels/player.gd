@@ -8,6 +8,7 @@ var _walk_path
 func _ready():
 	_move_tween.connect("tween_completed", self, "_on_move_complete")
 
+
 func _on_move_complete(object, key):
 	if(_walk_path.size() > 0):
 		_next_step()

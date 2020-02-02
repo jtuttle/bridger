@@ -11,5 +11,5 @@ dest_files=[ "res://.import/MetalHit1.ogg-97cb5784cc39091e355f6a14d4273a93.oggst
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

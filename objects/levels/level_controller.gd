@@ -47,6 +47,12 @@ onready var _lose_sound = $lose_sound
 # The last recorded path
 var _prev_path = []
 
+#duration for sound fade in and fade out
+const _fade_out_duration = 0.5
+const _fade_in_duration = 0.25
+const _ambient_volume_db = 0.0
+
+
 func _ready():
 	# Prevent randi() from returning same value on every run
 	randomize()
@@ -110,7 +116,30 @@ func _start_level():
 	_timer.set_wait_time(_timer_delay)
 	_timer.start()
 	
+	fade_in(_background_sound)
+	fade_in(_ambient_sound)
+	
 	_move_piece()
+
+func fade_in(stream_player:AudioStreamPlayer):
+	var tween = Tween.new()
+	self.add_child(tween)
+	tween.interpolate_property(stream_player, "volume_db", -80, _ambient_volume_db, _fade_in_duration, Tween.TRANS_LINEAR, Tween.EASE_IN, 0)
+	tween.start()
+	yield(tween, "tween_completed")
+	tween.queue_free()
+
+
+func fade_out(stream_player:AudioStreamPlayer):
+	var tween = Tween.new()
+	self.add_child(tween)
+	tween.interpolate_property(stream_player, "volume_db", stream_player.volume_db, -80, _fade_out_duration, Tween.TRANS_LINEAR, Tween.EASE_IN, 0)
+	tween.start()
+	yield(tween, "tween_completed")
+	tween.queue_free()
+	stream_player.stop()
+
+
 
 func _move_piece():
 	_clear_piece()
