@@ -1,0 +1,69 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://fonts/Ubuntu-BoldItalic.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/Ubuntu-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://objects/UI/lose_screen/lose_screen.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 72
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 42
+font_data = ExtResource( 2 )
+
+[node name="lose_screen" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="color_rect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="center_container" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="v_box_container" type="VBoxContainer" parent="center_container"]
+margin_left = 320.0
+margin_top = 102.0
+margin_right = 640.0
+margin_bottom = 437.0
+custom_constants/separation = 30
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="center_container/v_box_container"]
+margin_right = 320.0
+margin_bottom = 167.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "You Lose.
+"
+
+[node name="repeat_level_button" type="Button" parent="center_container/v_box_container"]
+margin_top = 197.0
+margin_right = 320.0
+margin_bottom = 251.0
+custom_fonts/font = SubResource( 2 )
+text = "Repeat Level"
+
+[node name="quit_button" type="Button" parent="center_container/v_box_container"]
+margin_top = 281.0
+margin_right = 320.0
+margin_bottom = 335.0
+custom_fonts/font = SubResource( 2 )
+text = "Quit"

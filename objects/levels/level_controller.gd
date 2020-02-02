@@ -3,7 +3,7 @@ extends Node2D
 const GRID_WIDTH = 20
 const GRID_HEIGHT = 11
 
-const PIECE_INITIAL_X = 14 # 22
+const PIECE_INITIAL_X = 42 # 22
 const PIECE_INITIAL_Y = 2
 
 const SPEED_UP_FACTOR = 5.0
@@ -11,11 +11,11 @@ const SPEED_UP_FACTOR = 5.0
 onready var _timer = $timer # piece stepper
 var _timer_delay = 1
 
-onready var _tile_map = $tile_map
+onready var _tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
 
 onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
 
-onready var _player = $player
+onready var _player = null #$player
 
 var _victory = false
 
@@ -35,6 +35,9 @@ const PATH_TILE = 2
 
 var _path_columns = []
 
+onready var _win_screen = $ui/win_screen
+onready var _lose_screen = $ui/lose_screen
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	# Prevent randi() from returning same value on every run
@@ -45,6 +48,7 @@ func _ready():
 	_place_minimum_level(_minimum_safe_row)
 
 	_start_level()
+
 
 func _input(event):
 	if _victory: return
@@ -71,6 +75,9 @@ func _input(event):
 	
 	if event.is_action_pressed("drop_piece"):
 		_drop_piece()
+		
+	if event.is_action_pressed("bring_up_ui"):
+		_win()
 
 func _start_level():
 	_spawn_piece()
@@ -84,7 +91,7 @@ func _start_level():
 	_column_top()
 
 func _move_piece():
-	print("move piece")
+#	print("move piece")
 	
 	_clear_piece()
 	_piece_x -= 1
@@ -93,7 +100,7 @@ func _move_piece():
 	_timer.start()
 
 func _drop_piece():
-	print("drop piece!")
+#	print("drop piece!")
 
 	_clear_piece()
 
@@ -110,6 +117,7 @@ func _drop_piece():
 	if !_victory:
 		_spawn_piece()
 
+
 func _win():
 	_timer.stop()
 	_victory = true
@@ -119,7 +127,9 @@ func _win():
 	for i in range(1, _tileset_max_cols):
 		tops.append(_column_top(i))
 	
-	_player.walk(tops)
+#	_player.walk(tops)
+	_win_screen.visible = true
+
 
 func _spawn_piece():
 	_piece = _shape_factory.next_shape()
@@ -193,11 +203,13 @@ func _check_path():
 	_draw_path(_path_columns)
 	return true
 
+
 func _clear_path():
 	#draw the contiguous path
 	for col in range(_path_columns.size()):
 		_tile_map.set_cell(col, _path_columns[col], WHITE_TILE)
 	_path_columns.clear()
+
 
 #replace the tiles at the array values in columns for the array indices
 func _draw_path(path : PoolIntArray):
@@ -218,4 +230,5 @@ func _column_top(col : int = 0):
 
 func _place_minimum_level(min_row : int = 15):
 	#draw rectangle at specified row in the grid, over the tilemap
+	
 	print("minimum level = ", min_row)
