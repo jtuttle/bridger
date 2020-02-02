@@ -128,8 +128,25 @@ func _get_leftmost_col(piece):
 				leftmost = i
 
 	return leftmost
-		
+
+func _piece_is_far_enough():
+	var rightmost = _get_rightmost_col(_piece)
+	return _piece_x + rightmost < _level_cols - 3
+
+func _get_rightmost_col(piece):
+	var rightmost = 0
+
+	for row in piece.get_coords():
+		for i in range(row.size()):
+			if row[i] == 1 && i > rightmost:
+				rightmost = i
+
+	return rightmost
+
 func _drop_piece():
+	if !_piece_is_far_enough():
+		return
+
 	_clear_piece()
 
 	while _is_piece_airborn():
