@@ -208,7 +208,7 @@ func _win():
 	#_level.move_player_on_path(_tile_map, _prev_path, PATH_OFFSET)
 	var tops = []
 	
-	for i in range(1, _level_cols):
+	for i in range(3, _level_cols):
 		tops.append(_column_top(i))
 	
 	_player.walk(tops)

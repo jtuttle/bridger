@@ -5,34 +5,28 @@ onready var _move_tween = $move
 var _walk_path
 
 func _ready():
-	_move_tween.connect("tween_complete", self, "_on_move_complete")
+	_move_tween.connect("tween_completed", self, "_on_move_complete")
 
 func _on_move_complete(object, key):
-	print("done?")
-	_next_step()
+	if(_walk_path.size() > 0):
+		_next_step()
 	
 func walk(column_tops):
-	print("WALKIES")
-#	print(column_tops)
-#	_walk_path = column_tops
-#	_next_step()
+	_walk_path = column_tops
+	_next_step()
 
 func _next_step():
 	var next_step = _walk_path.front()
 	_walk_path.pop_front()
-	print(next_step)
-	print(_walk_path)
 
 	var next_pos = Vector2(
 		self.position.x + 24,
-		(next_step - 1) * 24
+		next_step * 24
 	)
 	
 	_move_tween.interpolate_property(
-		self, "transform/pos", 1,
-		self.position, next_pos,
+		self, "global_position",
+		self.global_position, next_pos, 0.1,
 		Tween.TRANS_LINEAR, Tween.EASE_OUT
 	)
 	_move_tween.start()
-
-	print("uuuuh")

@@ -28,7 +28,6 @@ onready var _tween = $tween
 
 onready var _player = $player
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	#initialize to the bottom
@@ -41,12 +40,10 @@ func _ready():
 	_hazard.global_position = _hazard_top
 	_initial_position = _hazard.global_position
 	_initial_transform = _hazard.transform
-	
 
 func _process(delta):
 	if _float && _float_running == false:
 		_float_around()
-
 
 func _float_around():  #oscillate like you are floating in space
 	if _float:
@@ -61,22 +58,6 @@ func _float_around():  #oscillate like you are floating in space
 		yield(_tween, "tween_completed")
 		_float_running = false
 
-
 func puff(location : Vector2):
 	_puff.global_position = location
 	_puff.emitting = true
-
-
-func move_player_on_path(tile_map:TileMap, path:PoolIntArray, path_offset:int = 0):
-	print("path: ", path, " size: ", path.size())
-	print("player on tile: ", path_offset + 1, " at map index: (", path_offset, ", ", path[0], ")")
-	
-	for col in range(1, path.size()):
-		print("col - ", col + path_offset, " value: ", path[col])
-		var next_tile = Vector2(path_offset + col, path[col])
-		var next_position = tile_map.map_to_world(next_tile)
-		
-		_tween.interpolate_property(_player, "global_position", _player.global_position, next_position, 1, Tween.TRANS_LINEAR, Tween.EASE_IN)
-		_tween.start()
-		yield(_tween, "tween_completed")
-		#next step

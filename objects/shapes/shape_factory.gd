@@ -9,4 +9,5 @@ var L = load("res://objects/shapes/shape_l.gd")
 var _shapes = [I, O, T, S, Z, J, L]
 
 func next_shape():
-	return _shapes[randi() % _shapes.size()].new()
+	return T.new()
+	#return _shapes[randi() % _shapes.size()].new()
