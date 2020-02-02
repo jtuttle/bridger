@@ -244,6 +244,16 @@ func _reset():
 	_hide_win_screen()
 	_hide_lose_screen()
 
+	# TODO: REFACTOR ME PLZ
+	# Manually resetting controller state (barf)
+	_piece = null
+	_spawn_piece()
+	_timer.start()
+
+	_tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
+	_level = $level_holder/level_1
+
+	_victory = false
 
 func _show_win_screen():
 	$ui/color_rect.visible = true
@@ -260,5 +270,3 @@ func _show_lose_screen():
 func _hide_lose_screen():
 	$ui/color_rect.visible = false
 	_lose_screen.visible = false
-
-
