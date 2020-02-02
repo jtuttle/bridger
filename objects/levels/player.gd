@@ -1,5 +1,6 @@
 extends Node2D
 
+onready var _sprite = $sprite
 onready var _move_tween = $move
 
 var _walk_path
@@ -10,8 +11,14 @@ func _ready():
 func _on_move_complete(object, key):
 	if(_walk_path.size() > 0):
 		_next_step()
+	else:
+		_sprite.stop()
 	
 func walk(column_tops):
+	# Add one more column to get player off the screen
+	column_tops.append(column_tops.back())
+
+	_sprite.play("run")
 	_walk_path = column_tops
 	_next_step()
 

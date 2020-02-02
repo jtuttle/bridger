@@ -27,16 +27,16 @@ region = Rect2( 72, 0, 24, 48 )
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ) ],
 "loop": true,
-"name": "idle",
-"speed": 5.0
+"name": "run",
+"speed": 10.0
 } ]
 
 [node name="player" type="Node2D"]
 script = ExtResource( 2 )
 
-[node name="animated_sprite" type="AnimatedSprite" parent="."]
+[node name="sprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 5 )
-animation = "idle"
+animation = "run"
 centered = false
 offset = Vector2( 0, -48 )
 
