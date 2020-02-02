@@ -59,7 +59,6 @@ func _ready():
 	
 	_start_level()
 
-
 func get_hazard_level():
 	return _minimum_safe_row
 
@@ -102,6 +101,9 @@ func _input(event):
 		_win()
 
 func _start_level():
+	_prev_path = _get_path()
+	_draw_path(_prev_path)
+		
 	_spawn_piece()
 
 	_timer.connect("timeout", self, "_move_piece")
@@ -184,9 +186,9 @@ func _drop_piece():
 	_clear_prev_path()
 	_prev_path = _get_path()
 	_draw_path(_prev_path)
-#
-	var puff_loc = _tile_map.map_to_world(Vector2(_piece_x, _piece_y))
-	_level.puff(puff_loc)
+
+#	var puff_loc = _tile_map.map_to_world(Vector2(_piece_x, _piece_y))
+#	_level.puff(puff_loc)
 	
 	if _prev_path.size() == _level_cols - PATH_OFFSET:
 		_win()
@@ -307,6 +309,8 @@ func _reset():
 	_piece = null
 	_spawn_piece()
 	_timer.start()
+
+	_prev_path.clear()
 
 	_victory = false
 
