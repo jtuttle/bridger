@@ -18,16 +18,16 @@ script = ExtResource( 3 )
 texture = ExtResource( 4 )
 centered = false
 
-[node name="grid" type="Sprite" parent="."]
-modulate = Color( 1, 1, 1, 0.0470588 )
-texture = ExtResource( 6 )
-centered = false
-
 [node name="hazard" type="Sprite" parent="."]
 modulate = Color( 1, 1, 1, 0.705882 )
 position = Vector2( 0, 384 )
 scale = Vector2( 2, 1 )
 texture = ExtResource( 2 )
+centered = false
+
+[node name="grid" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.117647 )
+texture = ExtResource( 6 )
 centered = false
 
 [node name="tile_map" type="TileMap" parent="."]

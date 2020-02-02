@@ -1,0 +1,63 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://fonts/Ubuntu-BoldItalic.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://fonts/Ubuntu-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://objects/UI/tutorial_screen/tutorial_screen.gd" type="Script" id=3]
+
+[sub_resource type="DynamicFont" id=1]
+size = 72
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 42
+font_data = ExtResource( 2 )
+
+[node name="win_screen" type="CenterContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+size_flags_vertical = 2
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="v_box_container" type="VBoxContainer" parent="."]
+margin_left = 321.0
+margin_top = 102.0
+margin_right = 638.0
+margin_bottom = 437.0
+custom_constants/separation = 30
+alignment = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="title" type="Label" parent="v_box_container"]
+margin_right = 317.0
+margin_bottom = 167.0
+size_flags_vertical = 1
+custom_fonts/font = SubResource( 1 )
+text = "You Won!
+"
+
+[node name="next_level_button" type="Button" parent="v_box_container"]
+visible = false
+margin_top = 197.0
+margin_right = 317.0
+margin_bottom = 251.0
+custom_fonts/font = SubResource( 2 )
+text = "Next Level"
+
+[node name="repeat_level_button" type="Button" parent="v_box_container"]
+margin_top = 197.0
+margin_right = 317.0
+margin_bottom = 251.0
+custom_fonts/font = SubResource( 2 )
+text = "Repeat Level"
+
+[node name="quit_button" type="Button" parent="v_box_container"]
+margin_top = 281.0
+margin_right = 317.0
+margin_bottom = 335.0
+custom_fonts/font = SubResource( 2 )
+text = "Quit"
