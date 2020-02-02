@@ -3,7 +3,7 @@ extends Node2D
 const PIECE_INITIAL_X = 42 # 22
 const PIECE_INITIAL_Y = 1
 
-const SPEED_UP_FACTOR = 16.0
+const SPEED_UP_FACTOR = 50.0
 
 onready var _timer = $timer # piece stepper
 var _timer_delay = 1
@@ -46,6 +46,7 @@ func _ready():
 
 	_win_screen.connect("NEXT_LEVEL", self, "_reset")
 	_win_screen.connect("REPEAT_LEVEL", self, "_reset")
+	_lose_screen.connect("REPEAT_LEVEL", self, "_reset")
 	
 	_start_level()
 
@@ -112,9 +113,22 @@ func _move_piece():
 func _trash_piece():
 	# something bad
 	_piece = null
-	_spawn_piece()
-	_timer.start()
-		
+	_timer.stop()
+	
+	var top_of_pile = _column_top(0)
+	if top_of_pile <= 0:
+		_lose()
+	
+	else:
+		_tile_map.set_cell(0, top_of_pile - 1, PIECE_TILE)
+		_tile_map.set_cell(1, top_of_pile - 1, PIECE_TILE)
+		_tile_map.set_cell(0, top_of_pile - 2, PIECE_TILE)
+		_tile_map.set_cell(1, top_of_pile - 2, PIECE_TILE)
+	
+		_spawn_piece()
+		_timer.start()
+
+
 func _piece_is_too_far():
 	var leftmost = _get_leftmost_col(_piece)
 	return _piece_x + leftmost < 3
@@ -163,6 +177,12 @@ func _win():
 	_show_win_screen()
 
 
+func _lose():
+	_timer.stop()
+	_victory = true
+	_show_lose_screen()
+
+
 func _spawn_piece():
 	_piece = _shape_factory.next_shape()
 	_piece_x = PIECE_INITIAL_X
@@ -186,6 +206,7 @@ func _is_piece_airborn():
 
 	return true
 
+
 func _draw_piece():
 	var piece_coords = _piece.get_coords()
 	
@@ -207,6 +228,7 @@ func _clear_piece():
 			if piece_row[x] == 1:
 				_tile_map.set_cell(_piece_x + x, _piece_y + y, EMPTY_TILE)
 
+
 func _get_path():
 	var path = [ _column_top(0) ]
 
@@ -220,11 +242,13 @@ func _get_path():
 
 	return path
 
+
 func _clear_prev_path():
 	for col in range(_prev_path.size()):
 		_tile_map.set_cell(col, _prev_path[col], PIECE_TILE)
 
 	_prev_path.clear()
+
 
 #replace the tiles at the array values in columns for the array indices
 func _draw_path(path : PoolIntArray):

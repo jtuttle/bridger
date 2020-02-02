@@ -1,5 +1,8 @@
 extends Control
 
+signal REPEAT_LEVEL
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$center_container/v_box_container/repeat_level_button.connect("pressed", self, "_repeat_pressed")
@@ -9,6 +12,7 @@ func _ready():
 
 func _repeat_pressed():
 	global.load_level()
+	emit_signal("REPEAT_LEVEL")
 
 
 func _quit_pressed():
