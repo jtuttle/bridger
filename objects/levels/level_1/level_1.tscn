@@ -1,12 +1,22 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://objects/levels/level_tileset.tres" type="TileSet" id=1]
+[ext_resource path="res://images/lava_01.png" type="Texture" id=2]
+[ext_resource path="res://objects/levels/level_1/level_1.gd" type="Script" id=3]
 
 [node name="level_1" type="Node2D"]
+script = ExtResource( 3 )
 
 [node name="background" type="Sprite" parent="."]
+position = Vector2( 0, 384 )
+texture = ExtResource( 2 )
+centered = false
 
 [node name="hazard" type="Sprite" parent="."]
+position = Vector2( 0, 384 )
+scale = Vector2( 2, 1 )
+texture = ExtResource( 2 )
+centered = false
 
 [node name="tile_map" type="TileMap" parent="."]
 tile_set = ExtResource( 1 )
