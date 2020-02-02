@@ -63,6 +63,8 @@ func _ready():
 	_win_screen.connect("REPEAT_LEVEL", self, "_reset")
 	_lose_screen.connect("REPEAT_LEVEL", self, "_reset")
 	
+	global.initialize_level(get_child(0))
+	
 	_start_level()
 
 func get_hazard_level():
