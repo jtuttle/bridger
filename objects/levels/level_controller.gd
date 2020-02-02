@@ -1,8 +1,5 @@
 extends Node2D
 
-const GRID_WIDTH = 20
-const GRID_HEIGHT = 11
-
 const PIECE_INITIAL_X = 42 # 22
 const PIECE_INITIAL_Y = 2
 
@@ -12,6 +9,7 @@ onready var _timer = $timer # piece stepper
 var _timer_delay = 1
 
 onready var _tile_map = $level_holder/level_1/tile_map #TODO MAKE THIS A DYNAMIC PATH
+onready var _level = $level_holder/level_1
 
 onready var _shape_factory = load("res://objects/shapes/shape_factory.gd").new()
 
@@ -28,9 +26,6 @@ var _minimum_safe_row = 9 #lower than this row before it is passable
 
 const _level_cols = 40
 
-#const _tileset_max_cols = 39 #0..19
-#const _tileset_max_rows = 22 #0..10
-
 #tile index information
 const EMPTY_TILE = -1
 const PATH_TILE = 3
@@ -45,13 +40,13 @@ var _prev_path = []
 func _ready():
 	# Prevent randi() from returning same value on every run
 	randomize()
-
+	
 	set_process_input(true)
-
-	_place_minimum_level(_minimum_safe_row)
 
 	_start_level()
 
+func get_hazard_level():
+	return _minimum_safe_row
 
 func _input(event):
 	if _victory: return
